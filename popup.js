@@ -8,6 +8,11 @@ function render() {
         Object.keys(data).forEach((series) => {
             const div = document.createElement("div");
             div.textContent = `${series}: S${data[series].season}E${data[series].episode}`;
+            const a = document.createElement("a");
+            a.textContent = "(Open)";
+            a.href = data[series].urlPatterns[0];
+            a.target = "_blank";
+            div.appendChild(a);
             list.appendChild(div);
         });
     });
