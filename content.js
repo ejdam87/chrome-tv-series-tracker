@@ -1,4 +1,4 @@
-function showPopup(series) {
+function showPopup(series, season, episode) {
     const overlay = document.createElement("div");
     overlay.style.position = "fixed";
     overlay.style.top = 0;
@@ -18,13 +18,13 @@ function showPopup(series) {
     box.style.textAlign = "center";
 
     const title = document.createElement("h3");
-    title.innerText = `Detected ${series}`;
+    title.innerText = `Detected ${series}: current episode S${season}E${episode}`;
 
     const nextBtn = document.createElement("button");
-    nextBtn.innerText = "Next Episode";
+    nextBtn.innerText = "Increment Next Episode";
 
     const lastBtn = document.createElement("button");
-    lastBtn.innerText = "Last Episode of Series";
+    lastBtn.innerText = "The Last Episode of Series";
 
     const cancelBtn = document.createElement("button");
     cancelBtn.innerText = "Cancel";
@@ -65,9 +65,9 @@ function matchSeries(url, seriesData) {
 
         if (entry.urlPatterns) {
             for (const pattern of entry.urlPatterns) {
-            if (url.includes(pattern)) {
-                return series;
-            }
+                if (url.includes(pattern)) {
+                    return [series, entry.season, entry.episode];
+                }
             }
         }
     }
@@ -77,9 +77,9 @@ function matchSeries(url, seriesData) {
 
 chrome.storage.local.get(["seriesData"], (result) => {
     const data = result.seriesData || {};
-    const matchedSeries = matchSeries(window.location.href, data);
+    const [matchedSeries, season, episode] = matchSeries(window.location.href, data);
 
     if (matchedSeries) {
-        showPopup(matchedSeries);
+        showPopup(matchedSeries, season, episode);
     }
 });
