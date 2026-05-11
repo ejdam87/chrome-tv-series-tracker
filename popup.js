@@ -12,6 +12,8 @@ function render() {
             a.textContent = "(Open)";
             a.href = data[series].urlPatterns[0];
             a.target = "_blank";
+            const spacer = document.createTextNode(" ");
+            div.appendChild(spacer);
             div.appendChild(a);
             list.appendChild(div);
         });
